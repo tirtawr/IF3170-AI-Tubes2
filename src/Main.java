@@ -1,4 +1,5 @@
 import weka.classifiers.Classifier;
+import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.functions.MultilayerPerceptron;
 import weka.classifiers.lazy.IBk;
@@ -39,13 +40,23 @@ public class Main {
 //			}
 			
 			newData.setClassIndex(newData.numAttributes()-1);
+			System.out.println("-------------------Mulai learning nih bro-------------------");
 //			Classifier mClassifier = new NaiveBayes();
 //			Classifier mClassifier = new J48();
-//			Classifier mClassifier = new IBk();
-			System.out.println("-------------------Mulai learning nih bro-------------------");
-			Classifier mClassifier = new MultilayerPerceptron();
+			Classifier mClassifier = (Classifier) new IBk();
+//			Classifier mClassifier = new MultilayerPerceptron();
+			
+			
 			mClassifier.buildClassifier(newData);
 			System.out.println(mClassifier.toString());
+			
+			Evaluation eval = new Evaluation(newData);
+			eval.evaluateModel(mClassifier, newData);
+			
+			System.out.println(eval.toSummaryString("summary",false));
+			//System.out.println(eval.toClassDetailsString("Detail"));
+			//System.out.println(eval.toMatrixString());
+			
 			SerializationHelper.write("hasil.model", mClassifier);
 			System.out.println("\n-------------------Jalan kok bro-------------------");
 			
